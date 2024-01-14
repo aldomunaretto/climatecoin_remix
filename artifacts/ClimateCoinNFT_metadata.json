@@ -169,50 +169,6 @@
 					{
 						"indexed": false,
 						"internalType": "uint256",
-						"name": "ccAmount",
-						"type": "uint256"
-					},
-					{
-						"indexed": true,
-						"internalType": "uint256",
-						"name": "tokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "CCBurn",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "nftAddress",
-						"type": "address"
-					},
-					{
-						"indexed": true,
-						"internalType": "uint256",
-						"name": "tokenId",
-						"type": "uint256"
-					},
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "user",
-						"type": "address"
-					}
-				],
-				"name": "NFTExchanged",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "uint256",
 						"name": "tokenId",
 						"type": "uint256"
 					},
@@ -296,50 +252,6 @@
 					}
 				],
 				"name": "balanceOf",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "ccAmount",
-						"type": "uint256"
-					}
-				],
-				"name": "burnCCAndNFT",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "nftAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_tokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "exchangeNFTForCC",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "feePercentage",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -547,19 +459,6 @@
 					}
 				],
 				"name": "setApprovalForAll",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "newFeePercentage",
-						"type": "uint256"
-					}
-				],
-				"name": "setFeePercentage",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -785,7 +684,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"ClimateCoinProject.sol": "ClimateCoinNFT"
+			"ClimateCoinNFT.sol": "ClimateCoinNFT"
 		},
 		"evmVersion": "shanghai",
 		"libraries": {},
@@ -805,30 +704,6 @@
 			"urls": [
 				"bzz-raw://ea290300e0efc4d901244949dc4d877fd46e6c5e43dc2b26620e8efab3ab803f",
 				"dweb:/ipfs/QmcLLJppxKeJWqHxE2CUkcfhuRTgHSn8J4kijcLa5MYhSt"
-			]
-		},
-		"@openzeppelin/contracts/token/ERC20/ERC20.sol": {
-			"keccak256": "0xc3e1fa9d1987f8d349dfb4d6fe93bf2ca014b52ba335cfac30bfe71e357e6f80",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://c5703ccdeb7b1d685e375ed719117e9edf2ab4bc544f24f23b0d50ec82257229",
-				"dweb:/ipfs/QmTdwkbQq7owpCiyuzE7eh5LrD2ddrBCZ5WHVsWPi1RrTS"
-			]
-		},
-		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-			"keccak256": "0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://0ea104e577e63faea3b69c415637e99e755dcbf64c5833d7140c35a714d6d90c",
-				"dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq"
-			]
-		},
-		"@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
-			"keccak256": "0xaa761817f6cd7892fcf158b3c776b34551cde36f48ff9703d53898bc45a94ea2",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://0ad7c8d4d08938c8dfc43d75a148863fb324b80cf53e0a36f7e5a4ac29008850",
-				"dweb:/ipfs/QmcrhfPgVNf5mkdhQvy1pMv51TFokD3Y4Wa5WZhFqVh8UV"
 			]
 		},
 		"@openzeppelin/contracts/token/ERC721/ERC721.sol": {
@@ -911,12 +786,12 @@
 				"dweb:/ipfs/QmVBEei6aTnvYNZp2CHYVNKyZS4q1KkjANfY39WVXZXVoT"
 			]
 		},
-		"ClimateCoinProject.sol": {
-			"keccak256": "0x4d0a7596efcc59e92db32308e105ea2ad4777a2aa6225cc00a179d05c453c133",
+		"ClimateCoinNFT.sol": {
+			"keccak256": "0xa90311b862de626630140c9b9106a0fdc56ea104e202cdc0235aa9ae6c6ac588",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d84631c82300fd5b203d816de2470fd6b8835833741e83f4e854126df876ee66",
-				"dweb:/ipfs/QmayqSL7ME5czyH5fYyPw6aS3jaao7f2m26zCvb5N1nAnf"
+				"bzz-raw://900c622957123407a890e235b6fc45d11c162a46bc0d636b45af8f9101d88cbc",
+				"dweb:/ipfs/QmXWR9t3o5QUDr8fF56w5vZMetk8QgABSRe6x8o9nDFRvr"
 			]
 		}
 	},

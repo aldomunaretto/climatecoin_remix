@@ -43,7 +43,7 @@ contract ClimateCoinNFT is ERC721 {
     // Variables de Estado
     uint256 public tokenId;
     address private _owner;
-    uint256 private feePercentage = 1; // 1% por defecto
+    uint256 public feePercentage = 1; // 1% por defecto
     ClimateCoin public climateCoin;
     uint256 private initialClimateCoins = 297565 * 10 ** climateCoin.decimals();
 
@@ -56,7 +56,10 @@ contract ClimateCoinNFT is ERC721 {
 
     mapping(uint256 => NFTData) private _nftData;
 
-
+    // Eventos
+    event NFTMinted(uint256 tokenId, address indexed developerAddress, string projectName, string projectURL, uint256 credits);
+    event NFTExchanged(address indexed nftAddress, uint256 indexed tokenId, address indexed user);
+    event CCBurn(uint256 ccAmount, uint256 indexed tokenId);
 
     // Modificadores
     modifier onlyOwner() {
@@ -84,59 +87,7 @@ contract ClimateCoinNFT is ERC721 {
         return (data.projectName, data.projectURL, data.credits);
     }
 
-
-
-
-
-}
-
-contract ClimateCoinExchange {
-
-    //Variables de estado
-    ClimateCoin public climateCoin;
-    ClimateNFT public climateNFT;
-    uint256 public feePercentage = 1;
-
-    // Eventos
-    event NFTMinted(uint256 indexed tokenId, address indexed developerAddress, string projectName, string projectURL, uint256 credits);
-    event NFTExchanged(address indexed nftAddress, uint256 indexed tokenId, address indexed user);
-    event CCBurn(uint256 indexed tokenId, uint256 ccAmount);
-
-    // Modificadores
-    modifier onlyOwner() {
-        require(msg.sender == _owner, "Esta funcion solo puede ser llamada por el creador del contrato");
-        _;
-    }
-
-    constructor() {
-        climateCoin = new ClimateCoin();
-        climateNFT = new ClimateNFT();
-    }
-
-    function mintNFT(uint256 credits, string memory projectName, string memory projectURL, address developerAddress) public onlyOwner {
-        uint256 tokenId = climateNFT.totalSupply() + 1;
-        climateNFT.mint(developerAddress, tokenId, projectURL);
-        climateCoin.mint(developerAddress, credits);
-        emit NFTMinted(developerAddress, tokenId, credits);
-    }
-
     // Función para cambiar el porcentaje de la comisión
-    function setFeePercentage(uint256 newFeePercentage) public onlyOwner {
-        feePercentage = newFeePercentage;
-    }
-
-    function exchangeNFTForCC(address nftAddress, uint256 nftId) public {
-        require(climateNFT.ownerOf(nftId) == msg.sender, "Not the owner");
-        climateNFT.transferFrom(msg.sender, address(this), nftId);
-        uint256 credits = climateCoin.balanceOf(msg.sender);
-        uint256 fee = (credits * feePercentage) / 100;
-        uint256 finalAmount = credits - fee;
-        climateCoin.transfer(msg.sender, finalAmount);
-        climateCoin.transfer(owner(), fee);
-        emit NFTExchanged(msg.sender, nftId, finalAmount);
-    }
-
-
     function setFeePercentage(uint256 newFeePercentage) external onlyOwner {
         feePercentage = newFeePercentage;
     }
@@ -150,23 +101,12 @@ contract ClimateCoinExchange {
     }
 
     //Función de Quema de ClimateCoins y ClimateCoinNFT
-    function burnCCAndNFT(uint256 ccAmount) public {
+    function burnCCAndNFT(uint256 ccAmount) external {
         // Lógica para seleccionar y destruir un ClimateCoinNFT y quemar los ClimateCoins asociados al mismo. ¿Como vinculo el ccAmount a un tokenId?
-        require(climateCoin.balanceOf(msg.sender) >= ccAmount, "Not enough CC");
-        climateCoin.burn(ccAmount);
-        uint256 tokenId = climateNFT.totalSupply();
-        climateNFT.burn(tokenId);
-        emit CCBurn(tokenId, ccAmount);
+        emit CCBurn(ccAmount, tokenId);
     }
 
 }
-
-
-
-
-
-
-
 
 contract IntercambioSeguro {
     address public seller;
@@ -195,24 +135,3 @@ contract IntercambioSeguro {
         erc721Token.transferFrom(seller, msg.sender, erc721TokenId);
     }
 }
-
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-
-contract ClimateCoin is ERC20 {
-    constructor() ERC20("ClimateCoin", "CC") {}
-}
-
-contract ClimateNFT is ERC721 {
-    constructor() ERC721("ClimateNFT", "CNFT") {}
-
-    function mint(address to, uint256 tokenId, string memory tokenURI) public {
-        _mint(to, tokenId);
-        _setTokenURI(tokenId, tokenURI);
-    }
-}
-
