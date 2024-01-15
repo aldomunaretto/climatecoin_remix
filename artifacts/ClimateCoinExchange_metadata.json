@@ -6,18 +6,7 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_climateCoin",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "_climateCoinNFT",
-						"type": "address"
-					}
-				],
+				"inputs": [],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
@@ -25,15 +14,15 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "uint256",
-						"name": "ccAmount",
+						"name": "tokenId",
 						"type": "uint256"
 					},
 					{
-						"indexed": true,
+						"indexed": false,
 						"internalType": "uint256",
-						"name": "nftId",
+						"name": "ccAmount",
 						"type": "uint256"
 					}
 				],
@@ -52,7 +41,7 @@
 					{
 						"indexed": true,
 						"internalType": "uint256",
-						"name": "nftId",
+						"name": "tokenId",
 						"type": "uint256"
 					},
 					{
@@ -60,9 +49,52 @@
 						"internalType": "address",
 						"name": "user",
 						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "credits",
+						"type": "uint256"
 					}
 				],
 				"name": "NFTExchanged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "developerAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "projectName",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "projectURL",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "credits",
+						"type": "uint256"
+					}
+				],
+				"name": "NFTMinted",
 				"type": "event"
 			},
 			{
@@ -139,6 +171,34 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
+						"name": "credits",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "projectName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "projectURL",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "developerAddress",
+						"type": "address"
+					}
+				],
+				"name": "mintNFT",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "newFeePercentage",
 						"type": "uint256"
 					}
@@ -162,7 +222,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"ClimateCoinExchange.sol": "ClimateCoinExchange"
+			"ClimateCoinProject.sol": "ClimateCoinExchange"
 		},
 		"evmVersion": "shanghai",
 		"libraries": {},
@@ -288,28 +348,12 @@
 				"dweb:/ipfs/QmVBEei6aTnvYNZp2CHYVNKyZS4q1KkjANfY39WVXZXVoT"
 			]
 		},
-		"ClimateCoin.sol": {
-			"keccak256": "0xc97149a54d8892795ad573c800558047c45da6092187970d5eac90de498a1621",
+		"ClimateCoinProject.sol": {
+			"keccak256": "0x9cfbd733d0ef81cfd7acca07dd93b426f3375ae5a15480dbe0e1b23728564435",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a04b8b8281b9378bae8348f893acd7479b44514f5a6b7b4e5deb84ce144aa5f3",
-				"dweb:/ipfs/QmRKkY3T2TeHMqW5tZQYAY2sYJTZBnAjcyXVNjwKEQc5t1"
-			]
-		},
-		"ClimateCoinExchange.sol": {
-			"keccak256": "0xfd036fa35b3e295707d47f0a55da21972388f652f05b38101fa88a54c01b877e",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://915c170a131cd9b8c1c69636ef8e30e0d98cebd88425dfb6d1917b83d32048cb",
-				"dweb:/ipfs/QmdTnB8JMpu2kMihtScU1HMretvmMAromvMB8BazGGy8rm"
-			]
-		},
-		"ClimateCoinNFT.sol": {
-			"keccak256": "0xe45e69e6102d13b5d84ca594c10cbb1c6bcd6b120c74596e7bf3cdfce127667b",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://d05a7a832d14f154c9472eb8904d1ba6305cdcf8664211764738dde7e45247d9",
-				"dweb:/ipfs/QmbNGBQdrLt2NM6igcFvjySnRXvj7e5ChfAyA8QRCBNBYA"
+				"bzz-raw://dee29a772fddcf6c9bc34eaa3dfa37920474de2f3f790d3e414b67655223058b",
+				"dweb:/ipfs/QmbKq9VqrzHwj5DLQN1aLjbBQN7yh6k9ro1zgxcD9PaNv8"
 			]
 		}
 	},
