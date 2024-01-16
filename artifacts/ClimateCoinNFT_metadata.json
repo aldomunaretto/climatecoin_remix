@@ -803,11 +803,11 @@
 			]
 		},
 		"ClimateCoinProject.sol": {
-			"keccak256": "0x7c02dc40a0f7ab407fcf5fd5e6b5c4d1e12cf7f9e1d4c63bac4de21bf87604ce",
+			"keccak256": "0x35600d81d3c08db19b8b41359ef19af5fb50247f51fd23ddba8055d356952318",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://648f485c22ad3cce19b006a7ecaf1df62a0407e6ce67e10d4c4ba423514fbb46",
-				"dweb:/ipfs/QmRrPeTow4fiyyNhJyy9yfXyJg7YeFeyPU4rArjczcd9X4"
+				"bzz-raw://f72191cb8bf798e2d518635df2d6213bf482edd16404b6a1632d8a93944db7d2",
+				"dweb:/ipfs/QmaPjrtLBzvmxMw2PVg5HASAf9qeaZJ5zSg9krERVFLsWm"
 			]
 		}
 	},

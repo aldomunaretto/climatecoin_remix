@@ -127,26 +127,20 @@ contract ClimateCoinExchange {
         feePercentage = newFeePercentage;
     }
 
-    // function approveTransferNFT(uint256 nftId) public {
-    //     require(climateCoinNFT.ownerOf(nftId) == msg.sender, "No eres el propietario del climateCoinNFT");
-    //     climateCoinNFT.approve(address(this), nftId);
-    // }
-
     //Función de Intercambio de ClimateCoinNFT por ClimateCoins
     function exchangeNFTForCC(address nftAddress, uint256 nftId) public {
         // Lógica para intercambiar ClimateCoinNFT por ClimateCoins, teniendo en cuenta la comisión
-        // Transferir NFT al contrato y CC al usuario
+        // Transferir NFT al contrato, CC al usuario y comision al propietario del SC
         require(climateCoinNFT.ownerOf(nftId) == msg.sender, "No eres el propietario del climateCoinNFT");
         climateCoinNFT.approveOperator(address(this), msg.sender, nftId);
         (,,uint256 credits) = climateCoinNFT.getNFTData(nftId);
+        uint256 ccAmount = credits * 10 ** climateCoin.decimals();
         climateCoinNFT.transferFrom(msg.sender, address(this), nftId);
-        climateCoin.mint(address(this), credits * 10 ** climateCoin.decimals());
-        uint256 ccAmount = climateCoin.balanceOf(address(this));
+        climateCoin.mint(address(this), ccAmount);
         uint256 fee = (ccAmount * feePercentage) / 100;
         uint256 finalAmount = ccAmount - fee;
         climateCoin.transfer(msg.sender, finalAmount);
         climateCoin.transfer(owner, fee);
-        // climateCoin.transferFrom(msg.sender, owner, fee);
         emit NFTExchanged(nftAddress, nftId, msg.sender, finalAmount);
     }
 
