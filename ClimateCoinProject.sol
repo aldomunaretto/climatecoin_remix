@@ -4,7 +4,7 @@ pragma solidity ^0.8.22;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract ClimateCoin is ERC20{
+contract ClimateCoin is ERC20 {
 
     // Variables de Estado
     address public owner;
@@ -61,6 +61,7 @@ contract ClimateCoinNFT is ERC721 {
 
     constructor() ERC721("ClimateCoinNFT", "CCNFT") {
         owner = msg.sender;
+        setApprovalForAll(msg.sender, true);
     }
 
     // Función para Mintear ClimateCoinNFT
@@ -68,10 +69,8 @@ contract ClimateCoinNFT is ERC721 {
         uint256 thisToken = tokenId;
         _mint(developerAddress, thisToken);
         _nftData[thisToken] = NFTData(projectName, projectURL, credits);
-        setApprovalForAll(developerAddress, true);
         tokenId++;
         return thisToken;
-
     }
 
     // Función para obtener los datos de un ClimateCoinNFT
@@ -80,6 +79,11 @@ contract ClimateCoinNFT is ERC721 {
         NFTData memory data = _nftData[_tokenId];
         return (data.projectName, data.projectURL, data.credits);
     }
+
+    // function safeTransferFrom(address from, address to, uint256 _tokenId) public override {
+    //     //require(_isApprovedOrOwner(owner, _tokenId), "ERC721: transfer caller is not owner nor approved");
+    //     _safeTransfer(from, to, tokenId, "");
+    // }
 
 }
 
@@ -119,6 +123,11 @@ contract ClimateCoinExchange {
         feePercentage = newFeePercentage;
     }
 
+    // function approveTransferNFT(uint256 nftId) public {
+    //     require(climateCoinNFT.ownerOf(nftId) == msg.sender, "No eres el propietario del climateCoinNFT");
+    //     climateCoinNFT.approve(address(this), nftId);
+    // }
+
     //Función de Intercambio de ClimateCoinNFT por ClimateCoins
     function exchangeNFTForCC(address nftAddress, uint256 nftId) public {
         // Lógica para intercambiar ClimateCoinNFT por ClimateCoins, teniendo en cuenta la comisión
@@ -126,14 +135,14 @@ contract ClimateCoinExchange {
         require(climateCoinNFT.ownerOf(nftId) == msg.sender, "No eres el propietario del climateCoinNFT");
         (,,uint256 credits) = climateCoinNFT.getNFTData(nftId);
         climateCoinNFT.transferFrom(msg.sender, address(this), nftId);
-        climateCoin.mint(msg.sender, credits * 10 ** climateCoin.decimals());
-        // uint256 credits = climateCoin.balanceOf(msg.sender);
-        uint256 fee = (credits * feePercentage) / 100;
-        uint256 finalAmount = credits - fee;
-        // climateCoin.transfer(msg.sender, finalAmount);
-        // climateCoin.transfer(owner, fee);
-        climateCoin.transferFrom(msg.sender, owner, fee);
-        emit NFTExchanged(nftAddress, nftId, msg.sender, finalAmount);
+        // climateCoin.mint(msg.sender, credits * 10 ** climateCoin.decimals());
+        // // uint256 credits = climateCoin.balanceOf(msg.sender);
+        // uint256 fee = (credits * feePercentage) / 100;
+        // uint256 finalAmount = credits - fee;
+        // // climateCoin.transfer(msg.sender, finalAmount);
+        // // climateCoin.transfer(owner, fee);
+        // climateCoin.transferFrom(msg.sender, owner, fee);
+        // emit NFTExchanged(nftAddress, nftId, msg.sender, finalAmount);
     }
 
     //Función de Quema de ClimateCoins y ClimateCoinNFT
