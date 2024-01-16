@@ -207,6 +207,19 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -349,11 +362,11 @@
 			]
 		},
 		"ClimateCoinProject.sol": {
-			"keccak256": "0x35600d81d3c08db19b8b41359ef19af5fb50247f51fd23ddba8055d356952318",
+			"keccak256": "0x55278c2430322e2457c7d9e50ed531e5a181cb5e25744c86fd43ba7ec9e0b5b5",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://f72191cb8bf798e2d518635df2d6213bf482edd16404b6a1632d8a93944db7d2",
-				"dweb:/ipfs/QmaPjrtLBzvmxMw2PVg5HASAf9qeaZJ5zSg9krERVFLsWm"
+				"bzz-raw://9bef49d52f40f20c52beefe1f5eeeff2d63ceae0a4301f452f7ac30c6ac4a64a",
+				"dweb:/ipfs/Qmb2ABj54CoCHfV1NVCP15qTeMd2aWkyP5WQZfAu1SddKu"
 			]
 		}
 	},

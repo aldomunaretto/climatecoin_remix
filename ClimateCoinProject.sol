@@ -30,12 +30,6 @@ contract ClimateCoin is ERC20 {
         _burn(msg.sender, amount);
     }
 
-    // Función para transferir la propiedad del Smart Contract
-    function transferOwnership(address newOwner) public onlyOwner {
-        require(newOwner != address(0), "El creador del contrato no puede ser el address(0)");
-        owner = newOwner;
-    }
-
 }
 
 contract ClimateCoinNFT is ERC721 {
@@ -79,15 +73,10 @@ contract ClimateCoinNFT is ERC721 {
         return (data.projectName, data.projectURL, data.credits);
     }
 
+    // Función para aprobar al Smart Contract de Intercambio a transferir el ClimateCoinNFT
     function approveOperator(address _operator, address _tokenOwner ,uint256 _tokenId) onlyOwner external {
-        // _setApprovalForAll(msg.sender, operator, approved);
         _approve(_operator, _tokenId, _tokenOwner, false);
     }
-
-    // function safeTransferFrom(address from, address to, uint256 _tokenId) public override {
-    //     //require(_isApprovedOrOwner(owner, _tokenId), "ERC721: transfer caller is not owner nor approved");
-    //     _safeTransfer(from, to, tokenId, "");
-    // }
 
 }
 
@@ -116,15 +105,21 @@ contract ClimateCoinExchange {
         climateCoinNFT = new ClimateCoinNFT();
     }
 
+    // Función para cambiar el porcentaje de la comisión
+    function setFeePercentage(uint256 newFeePercentage) public onlyOwner {
+        feePercentage = newFeePercentage;
+    }
+
+    // Función para transferir la propiedad del Smart Contract
+    function transferOwnership(address newOwner) public onlyOwner {
+        require(newOwner != address(0), "El creador del contrato no puede ser el address(0)");
+        owner = newOwner;
+    }
+
     // Función para Mintear ClimateCoinNFT
     function mintNFT(uint256 credits, string memory projectName, string memory projectURL, address developerAddress) public onlyOwner {
         uint256 _tokenId = climateCoinNFT.mint(developerAddress, projectName, projectURL, credits);
         emit NFTMinted(_tokenId, developerAddress, projectName, projectURL, credits);
-    }
-
-    // Función para cambiar el porcentaje de la comisión
-    function setFeePercentage(uint256 newFeePercentage) public onlyOwner {
-        feePercentage = newFeePercentage;
     }
 
     //Función de Intercambio de ClimateCoinNFT por ClimateCoins
