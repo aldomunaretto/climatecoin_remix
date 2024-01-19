@@ -252,6 +252,19 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "burn",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "tokenId",
 						"type": "uint256"
 					}
@@ -803,11 +816,11 @@
 			]
 		},
 		"ClimateCoinProject.sol": {
-			"keccak256": "0x55278c2430322e2457c7d9e50ed531e5a181cb5e25744c86fd43ba7ec9e0b5b5",
+			"keccak256": "0x7e3deaa1e99e7789244f21958a867f70df659059b3380866b7638a171ed30f8f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9bef49d52f40f20c52beefe1f5eeeff2d63ceae0a4301f452f7ac30c6ac4a64a",
-				"dweb:/ipfs/Qmb2ABj54CoCHfV1NVCP15qTeMd2aWkyP5WQZfAu1SddKu"
+				"bzz-raw://689fe325c375acef0990395be586fcc1c460abe2a58ef7d15560333e3c978ef8",
+				"dweb:/ipfs/QmfEds5RzKpKFw5k5yz5hc4iFJyitF5zB5sJrGm6Wpi8B9"
 			]
 		}
 	},

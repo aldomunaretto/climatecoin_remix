@@ -6,7 +6,13 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "initialSupply",
+						"type": "uint256"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
@@ -216,8 +222,13 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address",
+						"name": "_sender",
+						"type": "address"
+					},
+					{
 						"internalType": "uint256",
-						"name": "amount",
+						"name": "_amount",
 						"type": "uint256"
 					}
 				],
@@ -243,12 +254,12 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "to",
+						"name": "_to",
 						"type": "address"
 					},
 					{
 						"internalType": "uint256",
-						"name": "amount",
+						"name": "_amount",
 						"type": "uint256"
 					}
 				],
@@ -593,11 +604,11 @@
 			]
 		},
 		"ClimateCoinProject.sol": {
-			"keccak256": "0x55278c2430322e2457c7d9e50ed531e5a181cb5e25744c86fd43ba7ec9e0b5b5",
+			"keccak256": "0x7e3deaa1e99e7789244f21958a867f70df659059b3380866b7638a171ed30f8f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9bef49d52f40f20c52beefe1f5eeeff2d63ceae0a4301f452f7ac30c6ac4a64a",
-				"dweb:/ipfs/Qmb2ABj54CoCHfV1NVCP15qTeMd2aWkyP5WQZfAu1SddKu"
+				"bzz-raw://689fe325c375acef0990395be586fcc1c460abe2a58ef7d15560333e3c978ef8",
+				"dweb:/ipfs/QmfEds5RzKpKFw5k5yz5hc4iFJyitF5zB5sJrGm6Wpi8B9"
 			]
 		}
 	},

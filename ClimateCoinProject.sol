@@ -10,8 +10,9 @@ contract ClimateCoin is ERC20 {
     address public owner;
 
     //Contructor
-    constructor() ERC20("ClimateCoin", "CC") {
+    constructor(uint256 initialSupply) ERC20("ClimateCoin", "CC") {
         owner = msg.sender;
+        _mint(owner, initialSupply*10**decimals());
     }
 
     // Modificadores
@@ -21,13 +22,13 @@ contract ClimateCoin is ERC20 {
     }
 
     // Función para mintear ClimateCoins adicionales
-    function mint(address to, uint256 amount) public onlyOwner {
-        _mint(to, amount);
+    function mint(address _to, uint256 _amount) public onlyOwner {
+        _mint(_to, _amount);
     }
 
-    // Función para quemar ClimateCoins
-    function burn(uint256 amount) public {
-        _burn(msg.sender, amount);
+    // Función para quemar ClimateCoins 
+    function burn(address _sender, uint256 _amount) public onlyOwner {
+        _burn(_sender, _amount);
     }
 
 }
@@ -68,7 +69,7 @@ contract ClimateCoinNFT is ERC721 {
 
     // Función para obtener los datos de un ClimateCoinNFT
     function getNFTData(uint256 _tokenId) public view returns (string memory, string memory, uint256) {
-        // Revisar que existe el NFT
+        require(_ownerOf(_tokenId) != address(0), "El token solicitado no existe");
         NFTData memory data = _nftData[_tokenId];
         return (data.projectName, data.projectURL, data.credits);
     }
@@ -76,6 +77,11 @@ contract ClimateCoinNFT is ERC721 {
     // Función para aprobar al Smart Contract de Intercambio a transferir el ClimateCoinNFT
     function approveOperator(address _operator, address _tokenOwner ,uint256 _tokenId) onlyOwner external {
         _approve(_operator, _tokenId, _tokenOwner, false);
+    }
+
+    // Función para quemar ClimateCoins 
+    function burn(uint256 _tokenId) public onlyOwner {
+        _burn(_tokenId);
     }
 
 }
@@ -87,11 +93,13 @@ contract ClimateCoinExchange {
     ClimateCoin public climateCoin;
     ClimateCoinNFT public climateCoinNFT;
     uint256 public feePercentage = 1;
+    uint256[] private contractNFTs;
 
     // Eventos
     event NFTMinted(uint256 indexed tokenId, address indexed developerAddress, string projectName, string projectURL, uint256 credits);
     event NFTExchanged(address indexed nftAddress, uint256 indexed tokenId, address indexed user, uint256 credits);
     event CCBurn(uint256 indexed tokenId, uint256 ccAmount);
+    event ErrorMessage(string errorMessage);
 
     // Modificadores
     modifier onlyOwner() {
@@ -101,7 +109,7 @@ contract ClimateCoinExchange {
 
     constructor() {
         owner = msg.sender;
-        climateCoin = new ClimateCoin();
+        climateCoin = new ClimateCoin(10000000);
         climateCoinNFT = new ClimateCoinNFT();
     }
 
@@ -136,18 +144,46 @@ contract ClimateCoinExchange {
         uint256 finalAmount = ccAmount - fee;
         climateCoin.transfer(msg.sender, finalAmount);
         climateCoin.transfer(owner, fee);
+        contractNFTs.push(nftId);
         emit NFTExchanged(nftAddress, nftId, msg.sender, finalAmount);
     }
 
     //Función de Quema de ClimateCoins y ClimateCoinNFT
     function burnCCAndNFT(uint256 ccAmount) public {
-        // Lógica para seleccionar y destruir un ClimateCoinNFT y quemar los ClimateCoins asociados al mismo. ¿Como vinculo el ccAmount a un tokenId?
-        // require(climateCoin.balanceOf(msg.sender) >= ccAmount, "Not enough CC");
-        // climateCoin.burn(ccAmount);
-        // uint256 tokenId = climateNFT.totalSupply();
-        // climateNFT.burn(tokenId);
-        // emit CCBurn(tokenId, ccAmount);
+        uint256 _amount = ccAmount*10**climateCoin.decimals();
+        require(climateCoin.balanceOf(msg.sender) >= _amount, "No tienes suficientes CC");
+        (bool matched, uint256 tokenId) = seekAndDestroy(_amount);
+        if (matched) {
+            climateCoinNFT.burn(tokenId);
+            climateCoin.burn(msg.sender, _amount);
+            emit CCBurn(tokenId, ccAmount);
+        } else {
+            emit ErrorMessage("Error al quemar los ClimateCoins");
+        }
+    }
+
+    // Función para encontrar elementos que coincidan con un valor y eliminar un ClimateCoinNFT específico por su ID
+    function seekAndDestroy(uint256 _wantedValue) internal returns (bool, uint256) {
+        bool _match = false;
+        uint256 _matchId;
+
+        // Verificar si el elemento a eliminar existe y coincide con el valor buscado
+        for (uint256 i = 0; i < contractNFTs.length; i++) {
+            (,,uint256 remainingCC) = climateCoinNFT.getNFTData(contractNFTs[i]);
+            if ( remainingCC >= _wantedValue) {
+                _match = true;
+                _matchId = i;
+                break;
+            }
+        }
+
+        require(_match, "Ningun elemento coincide con la cantidad de CC a quemar");
+        // Movemos el elemento seleccionado a la última posición del array
+        contractNFTs[_matchId] = contractNFTs[contractNFTs.length-1];
+        // Eliminar el elemento seleccionado de la lista de NFTs del contrato
+        contractNFTs.pop();
+        // return _matchId;
+        return (true, _matchId);
     }
 
 }
-
