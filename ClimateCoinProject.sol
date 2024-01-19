@@ -166,18 +166,22 @@ contract ClimateCoinExchange {
     function seekAndDestroy(uint256 _wantedValue) internal returns (bool, uint256) {
         bool _match = false;
         uint256 _matchId;
+        uint256 _minDiff = type(uint256).max; // Inicializar a un valor muy grande para ir poder obtener la mínima diferencia
 
-        // Verificar si el elemento a eliminar existe y coincide con el valor buscado
+        // Verificar si el elemento a eliminar existe y es el más cercano por arriba al valor buscado
         for (uint256 i = 0; i < contractNFTs.length; i++) {
             (,,uint256 remainingCC) = climateCoinNFT.getNFTData(contractNFTs[i]);
-            if ( remainingCC >= _wantedValue) {
-                _match = true;
-                _matchId = i;
-                break;
+            if (remainingCC >= _wantedValue) {
+                uint256 diff = remainingCC - _wantedValue;
+                if (diff < _minDiff) {
+                    _match = true;
+                    _matchId = i;
+                    _minDiff = diff;
+                }
             }
         }
 
-        require(_match, "Ningun elemento coincide con la cantidad de CC a quemar");
+        require(_match, "Ningun ClimateCoinNFT tiene la cantidad de ClimateCoins a quemar");
         // Movemos el elemento seleccionado a la última posición del array
         contractNFTs[_matchId] = contractNFTs[contractNFTs.length-1];
         // Eliminar el elemento seleccionado de la lista de NFTs del contrato
