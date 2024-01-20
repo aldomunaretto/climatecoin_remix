@@ -448,8 +448,28 @@
 				"balanceOf(address)": {
 					"details": "See {IERC20-balanceOf}."
 				},
+				"burn(address,uint256)": {
+					"details": "Solo el propietario del contrato puede llamar a esta función.",
+					"params": {
+						"_amount": "La cantidad de tokens a quemar.",
+						"_sender": "La dirección de la que se quemarán los tokens."
+					}
+				},
+				"constructor": {
+					"details": "Asigna al creador del contrato todas las monedas iniciales.",
+					"params": {
+						"initialSupply": "La cantidad inicial de tokens."
+					}
+				},
 				"decimals()": {
 					"details": "Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5.05` (`505 / 10 ** 2`). Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei. This is the default value returned by this function, unless it's overridden. NOTE: This information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including {IERC20-balanceOf} and {IERC20-transfer}."
+				},
+				"mint(address,uint256)": {
+					"details": "Solo el propietario del contrato puede llamar a esta función.",
+					"params": {
+						"_amount": "La cantidad de nuevos tokens a crear.",
+						"_to": "La dirección que recibirá los nuevos tokens."
+					}
 				},
 				"name()": {
 					"details": "Returns the name of the token."
@@ -467,11 +487,26 @@
 					"details": "See {IERC20-transferFrom}. Emits an {Approval} event indicating the updated allowance. This is not required by the EIP. See the note at the beginning of {ERC20}. NOTE: Does not update the allowance if the current allowance is the maximum `uint256`. Requirements: - `from` and `to` cannot be the zero address. - `from` must have a balance of at least `value`. - the caller must have allowance for ``from``'s tokens of at least `value`."
 				}
 			},
+			"title": "Contrato para el token ERC20 ClimateCoin.",
 			"version": 1
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {},
+			"methods": {
+				"burn(address,uint256)": {
+					"notice": "Función que destruye tokens ClimateCoin de una dirección."
+				},
+				"constructor": {
+					"notice": "Contructor para crear un nuevo token ClimateCoin."
+				},
+				"mint(address,uint256)": {
+					"notice": "Crea nuevos tokens ClimateCoin y los asigna a una dirección."
+				},
+				"owner()": {
+					"notice": "La dirección del propietario del contrato."
+				}
+			},
+			"notice": "Este contrato maneja la emisión y quema del token ERC20 ClimateCoin, así como asegura que dichas funciones solo sean llamadas por el propietario.",
 			"version": 1
 		}
 	},
@@ -604,11 +639,11 @@
 			]
 		},
 		"ClimateCoinProject.sol": {
-			"keccak256": "0x63582ad546c23b05ec3d3726ca80b5cbbf9e071aa8db45b6b02ad87bc4ee479a",
+			"keccak256": "0xc60119e8387aa76eb4af045117105e37b76023a84330d020a1059aa3239ef10f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e2e3f05e1ebc6184cce8d34ce8b059e631b6a1ea5ab50dc010a3ec2486b68a68",
-				"dweb:/ipfs/QmSeE3MC2RACuJBb5xhg1XFpiA8zSw1BmG772idHnKq8yB"
+				"bzz-raw://1a8db27485bedbb3e5c7536a6bf6457f054e678b88549b61a13bea70543f4a75",
+				"dweb:/ipfs/QmPm7JaBk8zqJrqdtrQjEzU5QV1sVjnQ9z3UPkByUuonjm"
 			]
 		}
 	},

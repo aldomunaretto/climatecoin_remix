@@ -1,38 +1,54 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.22;
 
+/// @title Desarrollo de DApp ClimateCoin en Solidity.
+/// @author Aldo Munaretto.
+/// @notice Este contrato implementa la funcionalidad de un token ERC20 y un token ERC721 para el proyecto ClimateCoin, así como la función de intercambio de los mismos.
+/// @dev Utiliza la biblioteca OpenZeppelin para implementar los estándares ERC20 y ERC721 de manera segura.
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
+/// @title Contrato para el token ERC20 ClimateCoin.
+/// @notice Este contrato maneja la emisión y quema del token ERC20 ClimateCoin, así como asegura que dichas funciones solo sean llamadas por el propietario.
 contract ClimateCoin is ERC20 {
 
-    // Variables de Estado
+    /// @notice La dirección del propietario del contrato.
     address public owner;
 
-    //Contructor
+    /// @notice Contructor para crear un nuevo token ClimateCoin.
+    /// @dev Asigna al creador del contrato todas las monedas iniciales.
+    /// @param initialSupply La cantidad inicial de tokens.
     constructor(uint256 initialSupply) ERC20("ClimateCoin", "CC") {
         owner = msg.sender;
         _mint(owner, initialSupply*10**decimals());
     }
 
-    // Modificadores
+    /// @notice Modificadores que asegura que solo el propietario del contrato puede llamar a una función.
     modifier onlyOwner {
         require(msg.sender == owner, "Esta funcion solo puede ser llamada por el creador del contrato");
         _;
     }
 
-    // Función para mintear ClimateCoins adicionales
+    /// @notice Crea nuevos tokens ClimateCoin y los asigna a una dirección.
+    /// @dev Solo el propietario del contrato puede llamar a esta función.
+    /// @param _to La dirección que recibirá los nuevos tokens.
+    /// @param _amount La cantidad de nuevos tokens a crear.
     function mint(address _to, uint256 _amount) public onlyOwner {
         _mint(_to, _amount);
     }
 
-    // Función para quemar ClimateCoins 
+    /// @notice Función que destruye tokens ClimateCoin de una dirección.
+    /// @dev Solo el propietario del contrato puede llamar a esta función.
+    /// @param _sender La dirección de la que se quemarán los tokens.
+    /// @param _amount La cantidad de tokens a quemar.
     function burn(address _sender, uint256 _amount) public onlyOwner {
         _burn(_sender, _amount);
     }
 
 }
 
+/// @title Contrato para el token ERC721 ClimateCoinNFT.
+/// @notice Este contrato maneja la emisión, almacenado de información adicional y quema del token ERC721 ClimateCoinNFT.
 contract ClimateCoinNFT is ERC721 {
 
     // Variables de Estado
