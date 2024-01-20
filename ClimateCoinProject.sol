@@ -79,7 +79,7 @@ contract ClimateCoinNFT is ERC721 {
         _approve(_operator, _tokenId, _tokenOwner, false);
     }
 
-    // Función para quemar ClimateCoins 
+    // Función para quemar ClimateCoinNFT
     function burn(uint256 _tokenId) public onlyOwner {
         _burn(_tokenId);
     }
@@ -130,7 +130,7 @@ contract ClimateCoinExchange {
         emit NFTMinted(_tokenId, developerAddress, projectName, projectURL, credits);
     }
 
-    //Función de Intercambio de ClimateCoinNFT por ClimateCoins
+    // Función de Intercambio de ClimateCoinNFT por ClimateCoins
     function exchangeNFTForCC(address nftAddress, uint256 nftId) public {
         // Lógica para intercambiar ClimateCoinNFT por ClimateCoins, teniendo en cuenta la comisión
         // Transferir NFT al contrato, CC al usuario y comision al propietario del SC
@@ -148,7 +148,7 @@ contract ClimateCoinExchange {
         emit NFTExchanged(nftAddress, nftId, msg.sender, finalAmount);
     }
 
-    //Función de Quema de ClimateCoins y ClimateCoinNFT
+    // Función de Quema de ClimateCoins y ClimateCoinNFT
     function burnCCAndNFT(uint256 ccAmount) public {
         uint256 _amount = ccAmount*10**climateCoin.decimals();
         require(climateCoin.balanceOf(msg.sender) >= _amount, "No tienes suficientes CC");
@@ -166,7 +166,7 @@ contract ClimateCoinExchange {
     function seekAndDestroy(uint256 _wantedValue) internal returns (bool, uint256) {
         bool _match = false;
         uint256 _matchId;
-        uint256 _minDiff = type(uint256).max; // Inicializar a un valor muy grande para ir poder obtener la mínima diferencia
+        uint256 _minDiff = type(uint256).max; // Inicializar a un valor muy grande para poder obtener la mínima diferencia
 
         // Verificar si el elemento a eliminar existe y es el más cercano por arriba al valor buscado
         for (uint256 i = 0; i < contractNFTs.length; i++) {
