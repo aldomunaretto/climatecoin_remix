@@ -4,7 +4,7 @@ pragma solidity ^0.8.22;
 /// @title Desarrollo de DApp ClimateCoin en Solidity.
 /// @author Aldo Munaretto.
 /// @notice Este contrato implementa la funcionalidad de un token ERC20 y un token ERC721 para el proyecto ClimateCoin, así como la función de intercambio de los mismos.
-/// @dev Utiliza la biblioteca OpenZeppelin para implementar los estándares ERC20 y ERC721 de manera segura.
+/// @dev Utiliza bibliotecas de OpenZeppelin para implementar los estándares ERC20 y ERC721 de manera segura.
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
@@ -119,55 +119,75 @@ contract ClimateCoinNFT is ERC721 {
 
 }
 
-
+/// @title Contrato para el intercambio de tokens ClimateCoinNFT por su correpondiente cantidad de ClimateCoins.
+/// @notice Este contrato permite crear el ClimateCoinNFT y asignarlo al propietario del proyecto, así como maneja el intercambio de tokens ClimateCoinNFT por su correpondiente cantidad de ClimateCoins a razón de un ClimateCoin por crédito de Carbono.
 contract ClimateCoinExchange {
 
-    //Variables de estado
+    /// @notice La dirección del propietario del contrato.
     address private owner;
+    /// @notice Variable para almacenar nuevo contrato ClimateCoin.
     ClimateCoin public climateCoin;
+    /// @notice Variable para almacenar nuevo contrato ClimateCoinNFT.
     ClimateCoinNFT public climateCoinNFT;
+    /// @notice Porcentaje de comisión por transacción (valor inicial 1%).
     uint256 public feePercentage = 1;
+    /// @notice Array de tokens ClimateCoinNFT transferidos a este contrato.
     uint256[] private contractNFTs;
 
-    // Eventos
+    /// @notice Evento que se emite cuando se genera un nuevo ClimateCoinNFT.
     event NFTMinted(uint256 indexed tokenId, address indexed developerAddress, string projectName, string projectURL, uint256 credits);
+    /// @notice Evento que se emite cuando se intercambia un ClimateCoinNFT por su correspondiente cantidad de ClimateCoins.
     event NFTExchanged(address indexed nftAddress, uint256 indexed tokenId, address indexed user, uint256 credits);
+    /// @notice Evento que se emite cuando se queman una cantidad determinmada de ClimateCoins y un token ClimateCoinNFT con una cantidad igual o superior en creditos.
     event CCBurn(uint256 indexed tokenId, uint256 ccAmount);
+    /// @notice Evento que se emite cuando ocurre un error.
     event ErrorMessage(string errorMessage);
 
-    // Modificadores
+    /// @notice Modificador que asegura que solo el propietario del contrato puede llamar a una función.
     modifier onlyOwner() {
         require(msg.sender == owner, "Esta funcion solo puede ser llamada por el creador del contrato");
         _;
     }
 
+    /// @notice Constructor que crea un nuevo contrato ClimateCoinExchange.
+    /// @dev Asigna al creador del contrato como propietario y crea nuevos contratos ClimateCoin(con un cantidad inicial de CC) y ClimateCoinNFT.
     constructor() {
         owner = msg.sender;
         climateCoin = new ClimateCoin(10000000);
         climateCoinNFT = new ClimateCoinNFT();
     }
 
-    // Función para cambiar el porcentaje de la comisión
+    /// @notice Cambia el porcentaje de la comisión.
+    /// @dev Solo el propietario del contrato puede llamar a esta función.
+    /// @param newFeePercentage El nuevo porcentaje de la comisión por intercambiar un ClimateCoinNFT.
     function setFeePercentage(uint256 newFeePercentage) public onlyOwner {
         feePercentage = newFeePercentage;
     }
 
-    // Función para transferir la propiedad del Smart Contract
+    /// @notice Transfiere la propiedad del Smart Contract a una nueva dirección.
+    /// @dev Solo el propietario del contrato puede llamar a esta función. El nuevo propietario no puede ser la dirección 0.
+    /// @param newOwner La dirección del nuevo propietario.
     function transferOwnership(address newOwner) public onlyOwner {
-        require(newOwner != address(0), "El creador del contrato no puede ser el address(0)");
+        require(newOwner != address(0), "El propietario del contrato no puede ser el address(0)");
         owner = newOwner;
     }
 
-    // Función para Mintear ClimateCoinNFT
+    /// @notice Genera un nuevo token ClimateCoinNFT.
+    /// @dev Solo el propietario del contrato puede llamar a esta función.
+    /// @param credits La cantidad de créditos del que se van a asociar al ClimateCoinNFT.
+    /// @param projectName El nombre del proyecto que acredita la obtención del ClimateCoinNFT.
+    /// @param projectURL La URL del proyecto que acredita la obtención del ClimateCoinNFT.
+    /// @param developerAddress La dirección del desarrollador del proyecto que acredita la obtención del ClimateCoinNFT.
     function mintNFT(uint256 credits, string memory projectName, string memory projectURL, address developerAddress) public onlyOwner {
         uint256 _tokenId = climateCoinNFT.mint(developerAddress, projectName, projectURL, credits);
         emit NFTMinted(_tokenId, developerAddress, projectName, projectURL, credits);
     }
 
-    // Función de Intercambio de ClimateCoinNFT por ClimateCoins
+    /// @notice Permite intercambiar un token ClimateCoinNFT por tokens ClimateCoin, por una pequeña comisión.
+    /// @dev El nuevo propietario del  token ClimateCoinNFT debe ser este Smart Contract.
+    /// @param nftAddress La dirección del contrato del ClimateCoinNFT.
+    /// @param nftId El ID del token ClimateCoinNFT a ser intercambiado.
     function exchangeNFTForCC(address nftAddress, uint256 nftId) public {
-        // Lógica para intercambiar ClimateCoinNFT por ClimateCoins, teniendo en cuenta la comisión
-        // Transferir NFT al contrato, CC al usuario y comision al propietario del SC
         require(climateCoinNFT.ownerOf(nftId) == msg.sender, "No eres el propietario del climateCoinNFT");
         climateCoinNFT.approveOperator(address(this), msg.sender, nftId);
         (,,uint256 credits) = climateCoinNFT.getNFTData(nftId);
@@ -182,7 +202,9 @@ contract ClimateCoinExchange {
         emit NFTExchanged(nftAddress, nftId, msg.sender, finalAmount);
     }
 
-    // Función de Quema de ClimateCoins y ClimateCoinNFT
+    /// @notice Permite destruir tokens ClimateCoin y un token ClimateCoinNFT con la cantidad igual o superior en créditos.
+    /// @dev El remitente debe tener suficientes tokens ClimateCoin para hacer la quema de los mismos.
+    /// @param ccAmount La cantidad de tokens ClimateCoin a quemar.
     function burnCCAndNFT(uint256 ccAmount) public {
         uint256 _amount = ccAmount*10**climateCoin.decimals();
         require(climateCoin.balanceOf(msg.sender) >= _amount, "No tienes suficientes CC");
@@ -196,7 +218,10 @@ contract ClimateCoinExchange {
         }
     }
 
-    // Función para encontrar elementos que coincidan con un valor y eliminar un ClimateCoinNFT específico por su ID
+    /// @notice Busca el ClimateCoinsNFT con la cantidad mas cercana (por arriba) a la cantidad de ClimateCoins especificados.
+    /// @dev La función es interna.
+    /// @param _wantedValue El valor del NFT a buscar y destruir.
+    /// @return un booleano indicando si se consiguio un token ClimateCoinNFT con un valor igual o superior al valor de ClimateCoins especificado y el ID de dicho token.
     function seekAndDestroy(uint256 _wantedValue) internal returns (bool, uint256) {
         bool _match = false;
         uint256 _matchId;
@@ -220,7 +245,6 @@ contract ClimateCoinExchange {
         contractNFTs[_matchId] = contractNFTs[contractNFTs.length-1];
         // Eliminar el elemento seleccionado de la lista de NFTs del contrato
         contractNFTs.pop();
-        // return _matchId;
         return (true, _matchId);
     }
 

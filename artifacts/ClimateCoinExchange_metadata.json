@@ -237,12 +237,94 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"burnCCAndNFT(uint256)": {
+					"details": "El remitente debe tener suficientes tokens ClimateCoin para hacer la quema de los mismos.",
+					"params": {
+						"ccAmount": "La cantidad de tokens ClimateCoin a quemar."
+					}
+				},
+				"constructor": {
+					"details": "Asigna al creador del contrato como propietario y crea nuevos contratos ClimateCoin(con un cantidad inicial de CC) y ClimateCoinNFT."
+				},
+				"exchangeNFTForCC(address,uint256)": {
+					"details": "El nuevo propietario del  token ClimateCoinNFT debe ser este Smart Contract.",
+					"params": {
+						"nftAddress": "La dirección del contrato del ClimateCoinNFT.",
+						"nftId": "El ID del token ClimateCoinNFT a ser intercambiado."
+					}
+				},
+				"mintNFT(uint256,string,string,address)": {
+					"details": "Solo el propietario del contrato puede llamar a esta función.",
+					"params": {
+						"credits": "La cantidad de créditos del que se van a asociar al ClimateCoinNFT.",
+						"developerAddress": "La dirección del desarrollador del proyecto que acredita la obtención del ClimateCoinNFT.",
+						"projectName": "El nombre del proyecto que acredita la obtención del ClimateCoinNFT.",
+						"projectURL": "La URL del proyecto que acredita la obtención del ClimateCoinNFT."
+					}
+				},
+				"setFeePercentage(uint256)": {
+					"details": "Solo el propietario del contrato puede llamar a esta función.",
+					"params": {
+						"newFeePercentage": "El nuevo porcentaje de la comisión por intercambiar un ClimateCoinNFT."
+					}
+				},
+				"transferOwnership(address)": {
+					"details": "Solo el propietario del contrato puede llamar a esta función. El nuevo propietario no puede ser la dirección 0.",
+					"params": {
+						"newOwner": "La dirección del nuevo propietario."
+					}
+				}
+			},
+			"title": "Contrato para el intercambio de tokens ClimateCoinNFT por su correpondiente cantidad de ClimateCoins.",
 			"version": 1
 		},
 		"userdoc": {
+			"events": {
+				"CCBurn(uint256,uint256)": {
+					"notice": "Evento que se emite cuando se queman una cantidad determinmada de ClimateCoins y un token ClimateCoinNFT con una cantidad igual o superior en creditos."
+				},
+				"ErrorMessage(string)": {
+					"notice": "Evento que se emite cuando ocurre un error."
+				},
+				"NFTExchanged(address,uint256,address,uint256)": {
+					"notice": "Evento que se emite cuando se intercambia un ClimateCoinNFT por su correspondiente cantidad de ClimateCoins."
+				},
+				"NFTMinted(uint256,address,string,string,uint256)": {
+					"notice": "Evento que se emite cuando se genera un nuevo ClimateCoinNFT."
+				}
+			},
 			"kind": "user",
-			"methods": {},
+			"methods": {
+				"burnCCAndNFT(uint256)": {
+					"notice": "Permite destruir tokens ClimateCoin y un token ClimateCoinNFT con la cantidad igual o superior en créditos."
+				},
+				"climateCoin()": {
+					"notice": "Variable para almacenar nuevo contrato ClimateCoin."
+				},
+				"climateCoinNFT()": {
+					"notice": "Variable para almacenar nuevo contrato ClimateCoinNFT."
+				},
+				"constructor": {
+					"notice": "Constructor que crea un nuevo contrato ClimateCoinExchange."
+				},
+				"exchangeNFTForCC(address,uint256)": {
+					"notice": "Permite intercambiar un token ClimateCoinNFT por tokens ClimateCoin, por una pequeña comisión."
+				},
+				"feePercentage()": {
+					"notice": "Porcentaje de comisión por transacción (valor inicial 1%)."
+				},
+				"mintNFT(uint256,string,string,address)": {
+					"notice": "Genera un nuevo token ClimateCoinNFT."
+				},
+				"setFeePercentage(uint256)": {
+					"notice": "Cambia el porcentaje de la comisión."
+				},
+				"transferOwnership(address)": {
+					"notice": "Transfiere la propiedad del Smart Contract a una nueva dirección."
+				}
+			},
+			"notice": "Este contrato permite crear el ClimateCoinNFT y asignarlo al propietario del proyecto, así como maneja el intercambio de tokens ClimateCoinNFT por su correpondiente cantidad de ClimateCoins a razón de un ClimateCoin por crédito de Carbono.",
 			"version": 1
 		}
 	},
@@ -375,11 +457,11 @@
 			]
 		},
 		"ClimateCoinProject.sol": {
-			"keccak256": "0x9d6463fb39217241b8b612e150ab0b85136ec5f3b4ad217d3f2b7c62f368cd20",
+			"keccak256": "0x453059a8fc38f027e08c531b569eb0661878c5db70521258e0d6936c4ff2a080",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://78e5bafb92f77fdd14c14dfa50582acd98e12727fb8dfb6c00e94290d9ce3256",
-				"dweb:/ipfs/QmfWWakFaXnwvdowpCt3zJT1WFdWwyT98LN7Tz4XACv4na"
+				"bzz-raw://2e0066f735d6773232d7164af1d142ecbfba7291d429bdcc2c41261e48a4d51c",
+				"dweb:/ipfs/QmaVNxyHorDxsfBaGZEnuFWK9BDAB7QTjPSyjS3LATiFfi"
 			]
 		}
 	},
