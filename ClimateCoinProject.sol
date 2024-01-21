@@ -23,7 +23,7 @@ contract ClimateCoin is ERC20 {
         _mint(owner, initialSupply*10**decimals());
     }
 
-    /// @notice Modificadores que asegura que solo el propietario del contrato puede llamar a una función.
+    /// @notice Modificador que asegura que solo el propietario del contrato puede llamar a una función.
     modifier onlyOwner {
         require(msg.sender == owner, "Esta funcion solo puede ser llamada por el creador del contrato");
         _;
@@ -51,30 +51,39 @@ contract ClimateCoin is ERC20 {
 /// @notice Este contrato maneja la emisión, almacenado de información adicional y quema del token ERC721 ClimateCoinNFT.
 contract ClimateCoinNFT is ERC721 {
 
-    // Variables de Estado
+    /// @notice El ID del token ClimateCoinNFT.
     uint256 public tokenId;
+    /// @notice La dirección del propietario del contrato.
     address private owner;
-
-    // Datos adicionales para cada ClimateCoinNFT
+    /// @notice Datos adicionales para cada ClimateCoinNFT.
     struct NFTData {
         string projectName;
         string projectURL;
         uint256 credits;
     }
 
+    /// @notice Un mapeo del ID del token ClimateCoinNFT con sus datos adicionales.
     mapping(uint256 => NFTData) private _nftData;
 
-    // Modificadores
+    /// @notice Modificador que asegura que solo el propietario del contrato puede llamar a una función.
     modifier onlyOwner() {
         require(msg.sender == owner, "Esta funcion solo puede ser llamada por el creador del contrato");
         _;
     }
 
+    /// @notice Constructor para crear un nuevo token ClimateCoinNFT.
+    /// @dev Asigna al creador del contrato como propietario.
     constructor() ERC721("ClimateCoinNFT", "CCNFT") {
         owner = msg.sender;
     }
 
-    // Función para Mintear ClimateCoinNFT
+    /// @notice Crea un nuevo token ClimateCoinNFT y lo asigna a una dirección.
+    /// @dev Solo el propietario del contrato puede llamar a esta función.
+    /// @param developerAddress La dirección a la que se asignará al nuevo token ClimateCoinNFT.
+    /// @param projectName El nombre del proyecto asociado al token ClimateCoinNFT.
+    /// @param projectURL La URL del proyecto asociado al token ClimateCoinNFT.
+    /// @param credits La cantidad de créditos asignados al token ClimateCoinNFT.
+    /// @return El ID del token ClimateCoinNFT recién creado.
     function mint(address developerAddress, string memory projectName, string memory projectURL, uint256 credits) onlyOwner external returns (uint256) {
         uint256 thisToken = tokenId;
         _mint(developerAddress, thisToken);
@@ -83,24 +92,33 @@ contract ClimateCoinNFT is ERC721 {
         return thisToken;
     }
 
-    // Función para obtener los datos de un ClimateCoinNFT
+    /// @notice Obtiene los datos adicionales de un ClimateCoinNFT.
+    /// @param _tokenId El ID del token ClimateCoinNFT.
+    /// @return El nombre del proyecto, la URL del proyecto y la cantidad de créditos asignados al token ClimateCoinNFT.
     function getNFTData(uint256 _tokenId) public view returns (string memory, string memory, uint256) {
         require(_ownerOf(_tokenId) != address(0), "El token solicitado no existe");
         NFTData memory data = _nftData[_tokenId];
         return (data.projectName, data.projectURL, data.credits);
     }
 
-    // Función para aprobar al Smart Contract de Intercambio a transferir el ClimateCoinNFT
+    /// @notice Aprueba al Smart Contract de Intercambio a transferir el ClimateCoinNFT.
+    /// @dev Solo el propietario del contrato puede llamar a esta función.
+    /// @param _operator La dirección del Smart Contract de Intercambio.
+    /// @param _tokenOwner La dirección del propietario del token ClimateCoinNFTa intercambiar.
+    /// @param _tokenId El ID del token ClimateCoinNFTa intercambiar.
     function approveOperator(address _operator, address _tokenOwner ,uint256 _tokenId) onlyOwner external {
         _approve(_operator, _tokenId, _tokenOwner, false);
     }
 
-    // Función para quemar ClimateCoinNFT
+    /// @notice Destruye un ClimateCoinNFT.
+    /// @dev Solo el propietario del contrato puede llamar a esta función.
+    /// @param _tokenId El ID del token ClimateCoinNFT a quemar.
     function burn(uint256 _tokenId) public onlyOwner {
         _burn(_tokenId);
     }
 
 }
+
 
 contract ClimateCoinExchange {
 

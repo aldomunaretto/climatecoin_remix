@@ -642,14 +642,51 @@
 				"approve(address,uint256)": {
 					"details": "See {IERC721-approve}."
 				},
+				"approveOperator(address,address,uint256)": {
+					"details": "Solo el propietario del contrato puede llamar a esta función.",
+					"params": {
+						"_operator": "La dirección del Smart Contract de Intercambio.",
+						"_tokenId": "El ID del token ClimateCoinNFTa intercambiar.",
+						"_tokenOwner": "La dirección del propietario del token ClimateCoinNFTa intercambiar."
+					}
+				},
 				"balanceOf(address)": {
 					"details": "See {IERC721-balanceOf}."
+				},
+				"burn(uint256)": {
+					"details": "Solo el propietario del contrato puede llamar a esta función.",
+					"params": {
+						"_tokenId": "El ID del token ClimateCoinNFT a quemar."
+					}
+				},
+				"constructor": {
+					"details": "Asigna al creador del contrato como propietario."
 				},
 				"getApproved(uint256)": {
 					"details": "See {IERC721-getApproved}."
 				},
+				"getNFTData(uint256)": {
+					"params": {
+						"_tokenId": "El ID del token ClimateCoinNFT."
+					},
+					"returns": {
+						"_0": "El nombre del proyecto, la URL del proyecto y la cantidad de créditos asignados al token ClimateCoinNFT."
+					}
+				},
 				"isApprovedForAll(address,address)": {
 					"details": "See {IERC721-isApprovedForAll}."
+				},
+				"mint(address,string,string,uint256)": {
+					"details": "Solo el propietario del contrato puede llamar a esta función.",
+					"params": {
+						"credits": "La cantidad de créditos asignados al token ClimateCoinNFT.",
+						"developerAddress": "La dirección a la que se asignará al nuevo token ClimateCoinNFT.",
+						"projectName": "El nombre del proyecto asociado al token ClimateCoinNFT.",
+						"projectURL": "La URL del proyecto asociado al token ClimateCoinNFT."
+					},
+					"returns": {
+						"_0": "El ID del token ClimateCoinNFT recién creado."
+					}
 				},
 				"name()": {
 					"details": "See {IERC721Metadata-name}."
@@ -684,7 +721,26 @@
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {},
+			"methods": {
+				"approveOperator(address,address,uint256)": {
+					"notice": "Aprueba al Smart Contract de Intercambio a transferir el ClimateCoinNFT."
+				},
+				"burn(uint256)": {
+					"notice": "Destruye un ClimateCoinNFT."
+				},
+				"constructor": {
+					"notice": "Constructor para crear un nuevo token ClimateCoinNFT."
+				},
+				"getNFTData(uint256)": {
+					"notice": "Obtiene los datos adicionales de un ClimateCoinNFT."
+				},
+				"mint(address,string,string,uint256)": {
+					"notice": "Crea un nuevo token ClimateCoinNFT y lo asigna a una dirección."
+				},
+				"tokenId()": {
+					"notice": "El ID del token ClimateCoinNFT."
+				}
+			},
 			"notice": "Este contrato maneja la emisión, almacenado de información adicional y quema del token ERC721 ClimateCoinNFT.",
 			"version": 1
 		}
@@ -818,11 +874,11 @@
 			]
 		},
 		"ClimateCoinProject.sol": {
-			"keccak256": "0xc60119e8387aa76eb4af045117105e37b76023a84330d020a1059aa3239ef10f",
+			"keccak256": "0x9d6463fb39217241b8b612e150ab0b85136ec5f3b4ad217d3f2b7c62f368cd20",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1a8db27485bedbb3e5c7536a6bf6457f054e678b88549b61a13bea70543f4a75",
-				"dweb:/ipfs/QmPm7JaBk8zqJrqdtrQjEzU5QV1sVjnQ9z3UPkByUuonjm"
+				"bzz-raw://78e5bafb92f77fdd14c14dfa50582acd98e12727fb8dfb6c00e94290d9ce3256",
+				"dweb:/ipfs/QmfWWakFaXnwvdowpCt3zJT1WFdWwyT98LN7Tz4XACv4na"
 			]
 		}
 	},
